@@ -1,19 +1,23 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
+import subprocess
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route("/", methods=["GET"])
 def home():
-    return 'Flask está rodando.'
+    return "Flask está rodando."
 
-@app.route('/webhook', methods=['POST'])
-def receber_webhook():
-    dados = request.get_json()
-    print('📥 Dados recebidos do n8n:')
-    print(dados)
+@app.route("/disparar", methods=["POST"])
+def disparar_bot():
+    data = request.get_json()
+    numero = data.get("numero")
 
-    # Aqui você pode salvar, processar ou responder
-    return jsonify({'mensagem': 'Recebido com sucesso'}), 200
+    if not numero:
+        return {"erro": "Número não fornecido"}, 400
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    print(f"Recebido número: {numero}")
+
+    # Executa script em Node.js passando o número como argumento
+    subprocess.Popen(["node", "zapi-bot.js", numero])
+
+    return {"status": "Bot iniciado"}, 200
