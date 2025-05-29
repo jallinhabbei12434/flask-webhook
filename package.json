@@ -1,0 +1,12 @@
+{
+  "name": "zapi-bot",
+  "version": "1.0.0",
+  "main": "zapi-bot.js",
+  "scripts": {
+    "start": "node zapi-bot.js"
+  },
+  "dependencies": {
+    "playwright": "^1.52.0",
+    "dotenv": "^16.5.0"
+  }
+}
